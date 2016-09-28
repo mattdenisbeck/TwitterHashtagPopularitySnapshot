@@ -1,0 +1,42 @@
+apply plugin: 'java'
+apply plugin: 'idea'
+apply plugin: 'war'
+
+sourceCompatibility = 1.8
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+war {
+    baseName = 'hashtag-snapshot'
+}
+
+dependencies {
+    providedCompile 'javax.servlet:javax.servlet-api:3.1.0'
+    compile 'javax.websocket:javax.websocket-api:1.1'
+    compile("javax.servlet:jstl:1.2")
+    compile 'org.glassfish:javax.json:1.0.4'
+    compile 'javax:javaee-api:7.0'
+    compile 'org.twitter4j:twitter4j-core:4.0.4'
+    compile 'org.twitter4j:twitter4j-stream:4.0.4'
+    compile 'com.fasterxml.jackson.core:jackson-databind:2.6.3'
+    compile 'com.amazonaws:amazon-kinesis-client:1.6.1'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.3'
+}
+
+task deploy (dependsOn: build){
+    copy {
+        from "build/libs"
+        into "/Users/mattdenisbeck/tomcat/webapps"
+
+        include "*.war"
+    }
+}
